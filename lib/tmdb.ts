@@ -68,3 +68,7 @@ export async function searchMovies(
     return { page: 1, results: [], total_pages: 0, total_results: 0 };
   return tmdbFetch<MovieResponse>("/search/movie", { query, page });
 }
+
+export async function getMovieDetails(id:number): Promise<any> {
+  return tmdbFetch(`/movie/${id}`, {append_to_response: "credits, videos, images"});  
+}

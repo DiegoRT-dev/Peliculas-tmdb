@@ -1,5 +1,6 @@
 import type { MovieBasic } from "@/lib/tmdb";
 import Image from "next/image";
+import Link from "next/link";
 
 type Props = {
   movie: MovieBasic;
@@ -11,7 +12,7 @@ export default function MovieCard({ movie }: Props) {
     : "/placeholder-movie.png";
 
   return (
-    <div className="group relative overflow-hidden rounded-xl bg-gray-900 shadow-md transition-transform hover:scale-[1.03] cursor-pointer">
+    <Link href={`/movie/${movie.id}`} className="group relative overflow-hidden rounded-xl bg-gray-900 shadow-md transition-transform hover:scale-[1.03] cursor-pointer">
       <div className="relative aspect-2/3 w-full">
         <Image
           src={poster}
@@ -34,6 +35,6 @@ export default function MovieCard({ movie }: Props) {
       </div>
 
       <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-    </div>
+    </Link>
   );
 }
