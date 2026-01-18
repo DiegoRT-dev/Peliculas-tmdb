@@ -3,7 +3,7 @@ const API_KEY = process.env.TMDB_API_KEY;
 if (!API_KEY) {
   throw new Error(
     "TMDB_API_KEY no está configurado. " +
-      "Agrega TMDB_API_KEY=tu_clave en .env.local y reinicia el servidor."
+      "Agrega TMDB_API_KEY=tu_clave en .env.local y reinicia el servidor.",
   );
 }
 
@@ -16,7 +16,7 @@ const defaultParams = {
 
 async function tmdbFetch<T>(
   endpoint: string,
-  params: Record<string, any> = {}
+  params: Record<string, any> = {},
 ): Promise<T> {
   const url = new URL(`${BASE_URL}${endpoint}`);
 
@@ -33,7 +33,7 @@ async function tmdbFetch<T>(
   if (!res.ok) {
     const errorText = await res.text().catch(() => "Sin detalles");
     throw new Error(
-      `TMDB error ${res.status} - ${res.statusText} - ${errorText}`
+      `TMDB error ${res.status} - ${res.statusText} - ${errorText}`,
     );
   }
 
@@ -56,19 +56,49 @@ export type MovieResponse = {
   total_results: number;
 };
 
+export interface MovieDetails {
+  id: number;
+  title: string;
+  poster_path: string | null;
+  overview: string;
+  vote_average: number;
+  release_date: string;
+  runtime: number;
+  tagline: string;
+  genres: { id: number; name: string }[];
+  credits: {
+    cast: Array<{
+      id: number;
+      name: string;
+    }>;
+    crew: Array<{ id: number; name: string; job: string }>;
+  };
+  videos: {
+    results: Array<{
+      key: string;
+      name: string;
+      site: string;
+      type: string;
+      official: boolean;
+    }>;
+  };
+}
+
 export async function getPopularMovies(page = 1): Promise<MovieResponse> {
   return tmdbFetch<MovieResponse>("/movie/popular", { page });
 }
 
 export async function searchMovies(
   query: string,
-  page = 1
+  page = 1,
 ): Promise<MovieResponse> {
   if (!query.trim())
     return { page: 1, results: [], total_pages: 0, total_results: 0 };
   return tmdbFetch<MovieResponse>("/search/movie", { query, page });
 }
 
-export async function getMovieDetails(id:number): Promise<any> {
-  return tmdbFetch(`/movie/${id}`, {append_to_response: "credits, videos, images"});  
+export async function getMovieDetails(id: number): Promise<MovieDetails> {
+  return tmdbFetch<MovieDetails>(`/movie/${id}`, {
+    append_to_response: "credits, videos, images",
+  });
 }

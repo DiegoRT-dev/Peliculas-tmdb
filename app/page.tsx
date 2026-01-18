@@ -3,7 +3,6 @@ import { getPopularMovies, searchMovies, type MovieResponse } from "@/lib/tmdb";
 import MovieListWrapper from "@/components/MovieListWrapper";
 import SearchBarWrapper from "@/components/SearchBarWrapper";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 type Props = {
   searchParams: Promise<{ q?: string; page?: string }>;
@@ -52,7 +51,6 @@ export default async function HomePage({ searchParams }: Props) {
           />
         </Suspense>
       </div>
-      <Footer />
     </main>
   );
 }
