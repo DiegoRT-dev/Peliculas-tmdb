@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import ActorList from "@/components/ActorList";
 import Header from "@/components/Header";
+import LikeButton from "@/components/LikeButton";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -163,7 +164,11 @@ export default async function MovieDetailsPage({ params }: Props) {
                 </div>
               )}
 
-              <div>
+              <div className="flex flex-wrap gap-4 mt-8">
+                <LikeButton 
+                  movieId={movie.id} 
+                  title={movie.title} 
+                />
                 <Link
                   href="/"
                   className="
